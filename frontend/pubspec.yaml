@@ -1,0 +1,60 @@
+name: lifeos
+description: LifeOS - AI Personal Operating System
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # State Management
+  flutter_riverpod: ^2.5.0
+  riverpod_annotation: ^2.3.0
+  
+  # Navigation
+  go_router: ^14.0.0
+  
+  # UI
+  flutter_chat_types: ^3.6.0
+  flutter_chat_ui: ^3.6.0
+  flutter_staggered_grid_view: ^0.7.0
+  fl_chart: ^0.68.0
+  
+  # Network
+  dio: ^5.4.0
+  web_socket_channel: ^2.4.0
+  
+  # Storage
+  shared_preferences: ^2.2.0
+  
+  # Telegram
+  telegram_web_app: ^3.0.0
+  
+  # Utils
+  intl: ^0.19.0
+  uuid: ^4.0.0
+  
+  # Icons
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  
+  flutter_lints: ^3.0.0
+  riverpod_generator: ^2.3.0
+  build_runner: ^2.4.0
+  
+  # Testing
+  mockito: ^5.4.0
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/icons/
+    - assets/images/
+    - assets/l10n/
