@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 
-type Tab = 'home' | 'ai' | 'tasks' | 'finance' | 'habits' | 'goals' | 'journal' | 'health' | 'shopping' | 'more'
+type Tab = 'home' | 'ai' | 'tasks' | 'finance' | 'habits' | 'goals' | 'journal' | 'health' | 'shopping' | 'roadmap' | 'more'
 
 const TABS: [Tab, string, string][] = [
   ['home', '🏠', 'Главная'],
@@ -14,6 +14,7 @@ const TABS: [Tab, string, string][] = [
   ['journal', '📖', 'Дневник'],
   ['health', '❤️', 'Здоровье'],
   ['shopping', '🛒', 'Покупки'],
+  ['roadmap', '🧭', 'План'],
   ['more', '⋯', 'Ещё'],
 ]
 
@@ -58,6 +59,7 @@ export default function Home() {
         {tab === 'journal' && <JournalTab />}
         {tab === 'health' && <HealthTab />}
         {tab === 'shopping' && <ShoppingTab />}
+        {tab === 'roadmap' && <RoadmapTab />}
         {tab === 'more' && <MoreTab />}
       </main>
 
@@ -86,55 +88,97 @@ export default function Home() {
 
 function HomeTab({ setTab }: { setTab: (t: Tab) => void }) {
   return (
-    <div className="space-y-4 slide-in">
-      {/* Stats Cards */}
-      <div className="grid grid-cols-2 gap-3">
-        <StatCard icon="📋" label="Задачи" value="3" sub="активных" color="blue" onClick={() => setTab('tasks')} />
-        <StatCard icon="🔥" label="Привычки" value="4/6" sub="выполнено" color="orange" onClick={() => setTab('habits')} />
-        <StatCard icon="💰" label="Расходы" value="470₽" sub="сегодня" color="green" onClick={() => setTab('finance')} />
-        <StatCard icon="🎯" label="Цели" value="3" sub="в процессе" color="purple" onClick={() => setTab('goals')} />
-      </div>
-
-      {/* Quick AI */}
-      <div className="glass rounded-2xl p-4 card-hover cursor-pointer" onClick={() => setTab('ai')}>
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-2xl">
-            🤖
+    <div className="space-y-5 slide-in">
+      <section className="relative overflow-hidden rounded-[2rem] border border-white/20 bg-slate-950 p-5 text-white shadow-2xl">
+        <div className="hero-orb hero-orb-one" />
+        <div className="hero-orb hero-orb-two" />
+        <div className="relative z-10">
+          <div className="mb-4 flex items-center justify-between">
+            <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur">LifeOS Daily</span>
+            <span className="rounded-full bg-emerald-400/20 px-3 py-1 text-xs text-emerald-200">🔥 12 дней</span>
           </div>
-          <div className="flex-1">
-            <p className="font-semibold text-gray-800">AI Ассистент</p>
-            <p className="text-sm text-gray-500">Спроси что угодно...</p>
+          <p className="text-sm text-indigo-100">AI уже собрал задачи, финансы, цели и привычки</p>
+          <h2 className="mt-2 text-3xl font-black leading-tight">Что мне сегодня делать?</h2>
+          <div className="mt-5 rounded-3xl bg-white/10 p-4 backdrop-blur-xl">
+            <div className="flex items-start gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-2xl shadow-lg">🧠</div>
+              <div className="flex-1">
+                <p className="font-semibold">Доброе утро. Начни с 3 действий:</p>
+                <div className="mt-3 space-y-2 text-sm text-white/85">
+                  <p>🔴 Закрыть важную задачу до 11:00</p>
+                  <p>🏃 30 минут тренировки для серии</p>
+                  <p>💰 Проверить подписки и бюджет дня</p>
+                </div>
+              </div>
+            </div>
+            <button onClick={() => setTab('ai')} className="mt-4 w-full rounded-2xl bg-white px-4 py-3 font-bold text-indigo-700 shadow-xl transition hover:scale-[1.01]">
+              Спросить AI голосом →
+            </button>
           </div>
-          <span className="text-gray-400">→</span>
         </div>
-      </div>
+      </section>
 
-      {/* Today's Tasks */}
-      <div className="glass rounded-2xl p-4">
-        <div className="flex justify-between items-center mb-3">
-          <h3 className="font-semibold text-gray-800">Сегодня</h3>
-          <button onClick={() => setTab('tasks')} className="text-indigo-500 text-sm">Все →</button>
-        </div>
-        <div className="space-y-2">
-          <TaskItem title="Купить продукты" priority="high" done={false} />
-          <TaskItem title="Позвонить маме" priority="medium" done={false} />
-          <TaskItem title="Пробежка 5 км" priority="low" done={true} />
-        </div>
-      </div>
+      <section className="grid grid-cols-2 gap-3">
+        <WowStat icon="📋" label="План" value="3" sub="главных дела" tone="from-sky-400 to-blue-600" onClick={() => setTab('tasks')} />
+        <WowStat icon="🔥" label="Привычки" value="4/6" sub="сегодня" tone="from-orange-400 to-rose-500" onClick={() => setTab('habits')} />
+        <WowStat icon="💰" label="Бюджет" value="530₽" sub="осталось" tone="from-emerald-400 to-teal-600" onClick={() => setTab('finance')} />
+        <WowStat icon="🎯" label="Цели" value="35%" sub="накопления" tone="from-violet-400 to-fuchsia-600" onClick={() => setTab('goals')} />
+      </section>
 
-      {/* Habits Progress */}
-      <div className="glass rounded-2xl p-4">
-        <div className="flex justify-between items-center mb-3">
-          <h3 className="font-semibold text-gray-800">Привычки</h3>
-          <button onClick={() => setTab('habits')} className="text-indigo-500 text-sm">Все →</button>
+      <section className="glass rounded-[2rem] p-4 shadow-xl">
+        <div className="mb-4 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wide text-indigo-500">Core MVP</p>
+            <h3 className="text-lg font-black text-gray-900">Ежедневные модули</h3>
+          </div>
+          <button onClick={() => setTab('roadmap')} className="rounded-full bg-indigo-50 px-3 py-2 text-xs font-bold text-indigo-600">План →</button>
         </div>
-        <div className="flex gap-3 overflow-x-auto pb-2">
-          <HabitMini icon="💧" name="Вода" progress={60} />
-          <HabitMini icon="🏃" name="Спорт" progress={100} />
-          <HabitMini icon="📚" name="Чтение" progress={30} />
+        <div className="grid gap-3">
+          <ModulePreview icon="🧠" title="AI Personal Assistant" text="Отвечает на главный вопрос дня и помнит контекст." onClick={() => setTab('ai')} />
+          <ModulePreview icon="📅" title="Smart Planner" text="Собирает задачи, дедлайны и приоритеты в план." onClick={() => setTab('tasks')} />
+          <ModulePreview icon="💰" title="Finance Manager" text="Расходы голосом, бюджет и цели накопления." onClick={() => setTab('finance')} />
         </div>
-      </div>
+      </section>
+
+      <section className="glass rounded-[2rem] p-4 shadow-xl">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wide text-orange-500">Retention</p>
+            <h3 className="text-lg font-black text-gray-900">Вернуться вечером</h3>
+          </div>
+          <span className="rounded-full bg-orange-50 px-3 py-2 text-xs font-bold text-orange-600">AI Journal</span>
+        </div>
+        <div className="mt-4 rounded-3xl bg-gradient-to-r from-orange-50 to-pink-50 p-4">
+          <p className="font-semibold text-gray-900">Как прошёл день?</p>
+          <p className="mt-1 text-sm text-gray-600">Вечером AI спросит голосом, оценит настроение и покажет прогресс по целям.</p>
+          <button onClick={() => setTab('journal')} className="mt-3 rounded-2xl bg-gray-900 px-4 py-2 text-sm font-bold text-white">Открыть дневник</button>
+        </div>
+      </section>
     </div>
+  )
+}
+
+function WowStat({ icon, label, value, sub, tone, onClick }: { icon: string; label: string; value: string; sub: string; tone: string; onClick: () => void }) {
+  return (
+    <button onClick={onClick} className="card-hover overflow-hidden rounded-[1.5rem] bg-white/95 p-4 text-left shadow-xl">
+      <div className={`mb-3 flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br ${tone} text-2xl shadow-lg`}>{icon}</div>
+      <p className="text-2xl font-black text-gray-900">{value}</p>
+      <p className="text-sm font-semibold text-gray-700">{label}</p>
+      <p className="text-xs text-gray-500">{sub}</p>
+    </button>
+  )
+}
+
+function ModulePreview({ icon, title, text, onClick }: { icon: string; title: string; text: string; onClick: () => void }) {
+  return (
+    <button onClick={onClick} className="flex items-center gap-3 rounded-3xl bg-gray-50 p-3 text-left transition hover:bg-indigo-50">
+      <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-2xl shadow-sm">{icon}</span>
+      <span className="flex-1">
+        <span className="block font-bold text-gray-900">{title}</span>
+        <span className="block text-sm text-gray-500">{text}</span>
+      </span>
+      <span className="text-indigo-500">→</span>
+    </button>
   )
 }
 
@@ -431,6 +475,67 @@ function ShoppingTab() {
           </div>
         ))}
       </div>
+    </div>
+  )
+}
+
+
+const MODULE_LEVELS = [
+  {
+    name: 'Core',
+    badge: 'MVP',
+    color: 'from-emerald-400 to-teal-600',
+    description: 'Обязательные модули, которые отвечают на вопрос «что мне сегодня делать?»',
+    modules: ['🧠 AI Personal Assistant', '📅 Smart Planner', '💰 Finance Manager', '🎯 Goals', '🔥 Habit Tracker'],
+  },
+  {
+    name: 'Retention',
+    badge: 'Ежедневно',
+    color: 'from-amber-400 to-orange-600',
+    description: 'Ритуалы и память, из-за которых пользователь возвращается утром и вечером.',
+    modules: ['📖 AI Journal', '🧠 Personal Memory', '📚 Knowledge Vault', '🎤 Voice Assistant', '📸 AI Scanner'],
+  },
+  {
+    name: 'Advanced',
+    badge: 'Уникальность',
+    color: 'from-blue-400 to-indigo-600',
+    description: 'Расширения для семьи, коучинга, покупок, безопасности и личной хроники.',
+    modules: ['👨‍👩‍👧 Family Mode', '🤖 AI Life Coach', '🏆 Gamification', '🛒 Smart Shopping', '🛡 Digital Safety'],
+  },
+]
+
+function RoadmapTab() {
+  return (
+    <div className="space-y-4 slide-in">
+      <div className="text-white">
+        <h2 className="text-xl font-bold">🧭 Стратегия модулей</h2>
+        <p className="text-sm text-white/80 mt-1">Не набор функций, а ежедневная привычка для людей любого возраста.</p>
+      </div>
+
+      <div className="glass rounded-2xl p-4">
+        <p className="text-xs uppercase tracking-wide text-indigo-600 font-bold">Главный retention loop</p>
+        <p className="text-gray-800 font-semibold mt-1">Утро: план дня → День: быстрый ввод голосом → Вечер: журнал и прогресс.</p>
+      </div>
+
+      {MODULE_LEVELS.map(level => (
+        <div key={level.name} className="glass rounded-2xl overflow-hidden card-hover">
+          <div className={`bg-gradient-to-r ${level.color} p-4 text-white`}>
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-bold">{level.name}</h3>
+              <span className="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold">{level.badge}</span>
+            </div>
+            <p className="text-sm text-white/85 mt-2">{level.description}</p>
+          </div>
+          <div className="p-4 grid gap-2">
+            {level.modules.map(module => (
+              <div key={module} className="flex items-center justify-between rounded-xl bg-white/60 px-3 py-2">
+                <span className="text-sm font-medium text-gray-800">{module}</span>
+                <span className="text-indigo-500">→</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   )
 }
