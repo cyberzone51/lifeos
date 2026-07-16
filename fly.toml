@@ -1,5 +1,4 @@
 app = "lifeos"
-primary_region = "prg"
 
 [build]
   dockerfile = "Dockerfile"
