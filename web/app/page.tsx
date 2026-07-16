@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 
-type Tab = 'home' | 'ai' | 'tasks' | 'finance' | 'habits' | 'goals' | 'journal' | 'health' | 'shopping' | 'more'
+type Tab = 'home' | 'ai' | 'tasks' | 'finance' | 'habits' | 'goals' | 'journal' | 'health' | 'shopping' | 'roadmap' | 'more'
 
 const TABS: [Tab, string, string][] = [
   ['home', '🏠', 'Главная'],
@@ -14,6 +14,7 @@ const TABS: [Tab, string, string][] = [
   ['journal', '📖', 'Дневник'],
   ['health', '❤️', 'Здоровье'],
   ['shopping', '🛒', 'Покупки'],
+  ['roadmap', '🧭', 'План'],
   ['more', '⋯', 'Ещё'],
 ]
 
@@ -58,6 +59,7 @@ export default function Home() {
         {tab === 'journal' && <JournalTab />}
         {tab === 'health' && <HealthTab />}
         {tab === 'shopping' && <ShoppingTab />}
+        {tab === 'roadmap' && <RoadmapTab />}
         {tab === 'more' && <MoreTab />}
       </main>
 
@@ -93,6 +95,24 @@ function HomeTab({ setTab }: { setTab: (t: Tab) => void }) {
         <StatCard icon="🔥" label="Привычки" value="4/6" sub="выполнено" color="orange" onClick={() => setTab('habits')} />
         <StatCard icon="💰" label="Расходы" value="470₽" sub="сегодня" color="green" onClick={() => setTab('finance')} />
         <StatCard icon="🎯" label="Цели" value="3" sub="в процессе" color="purple" onClick={() => setTab('goals')} />
+      </div>
+
+      {/* Daily Habit Loop */}
+      <div className="glass rounded-2xl p-4 bg-white/90">
+        <div className="flex items-start gap-3">
+          <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center text-2xl">
+            🌅
+          </div>
+          <div className="flex-1">
+            <p className="font-semibold text-gray-800">Ежедневный сценарий</p>
+            <p className="text-sm text-gray-600 mt-1">AI собирает задачи, бюджет, цели и привычки в один понятный план дня.</p>
+            <div className="mt-3 grid grid-cols-3 gap-2 text-center text-xs">
+              <button onClick={() => setTab('ai')} className="rounded-xl bg-indigo-50 px-2 py-2 text-indigo-700">🧠 Спросить</button>
+              <button onClick={() => setTab('tasks')} className="rounded-xl bg-red-50 px-2 py-2 text-red-700">🔴 Важное</button>
+              <button onClick={() => setTab('habits')} className="rounded-xl bg-orange-50 px-2 py-2 text-orange-700">🔥 Серия</button>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Quick AI */}
@@ -431,6 +451,67 @@ function ShoppingTab() {
           </div>
         ))}
       </div>
+    </div>
+  )
+}
+
+
+const MODULE_LEVELS = [
+  {
+    name: 'Core',
+    badge: 'MVP',
+    color: 'from-emerald-400 to-teal-600',
+    description: 'Обязательные модули, которые отвечают на вопрос «что мне сегодня делать?»',
+    modules: ['🧠 AI Personal Assistant', '📅 Smart Planner', '💰 Finance Manager', '🎯 Goals', '🔥 Habit Tracker'],
+  },
+  {
+    name: 'Retention',
+    badge: 'Ежедневно',
+    color: 'from-amber-400 to-orange-600',
+    description: 'Ритуалы и память, из-за которых пользователь возвращается утром и вечером.',
+    modules: ['📖 AI Journal', '🧠 Personal Memory', '📚 Knowledge Vault', '🎤 Voice Assistant', '📸 AI Scanner'],
+  },
+  {
+    name: 'Advanced',
+    badge: 'Уникальность',
+    color: 'from-blue-400 to-indigo-600',
+    description: 'Расширения для семьи, коучинга, покупок, безопасности и личной хроники.',
+    modules: ['👨‍👩‍👧 Family Mode', '🤖 AI Life Coach', '🏆 Gamification', '🛒 Smart Shopping', '🛡 Digital Safety'],
+  },
+]
+
+function RoadmapTab() {
+  return (
+    <div className="space-y-4 slide-in">
+      <div className="text-white">
+        <h2 className="text-xl font-bold">🧭 Стратегия модулей</h2>
+        <p className="text-sm text-white/80 mt-1">Не набор функций, а ежедневная привычка для людей любого возраста.</p>
+      </div>
+
+      <div className="glass rounded-2xl p-4">
+        <p className="text-xs uppercase tracking-wide text-indigo-600 font-bold">Главный retention loop</p>
+        <p className="text-gray-800 font-semibold mt-1">Утро: план дня → День: быстрый ввод голосом → Вечер: журнал и прогресс.</p>
+      </div>
+
+      {MODULE_LEVELS.map(level => (
+        <div key={level.name} className="glass rounded-2xl overflow-hidden card-hover">
+          <div className={`bg-gradient-to-r ${level.color} p-4 text-white`}>
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-bold">{level.name}</h3>
+              <span className="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold">{level.badge}</span>
+            </div>
+            <p className="text-sm text-white/85 mt-2">{level.description}</p>
+          </div>
+          <div className="p-4 grid gap-2">
+            {level.modules.map(module => (
+              <div key={module} className="flex items-center justify-between rounded-xl bg-white/60 px-3 py-2">
+                <span className="text-sm font-medium text-gray-800">{module}</span>
+                <span className="text-indigo-500">→</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   )
 }
