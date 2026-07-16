@@ -50,12 +50,23 @@ function LoginPage({ supabase }: { supabase: any }) {
     setLoading(true)
     setError('')
 
-    const { error } = isSignUp
-      ? await supabase.auth.signUp({ email, password })
-      : await supabase.auth.signInWithPassword({ email, password })
+    try {
+      const response = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, isSignUp }),
+      })
 
-    if (error) {
-      setError(error.message)
+      const data = await response.json()
+
+      if (data.error) {
+        setError(data.error)
+      } else if (data.session) {
+        // Refresh the page to pick up the new session
+        window.location.reload()
+      }
+    } catch (err) {
+      setError('Network error')
     }
     setLoading(false)
   }
