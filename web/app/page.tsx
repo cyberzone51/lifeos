@@ -20,7 +20,8 @@ export default function Home() {
   const handleTelegramLogin = async () => {
     // Telegram Mini App sends initData
     // We'll verify it on the server
-    const initData = window.Telegram?.WebApp?.initData
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const initData = (window as any).Telegram?.WebApp?.initData
     
     if (initData) {
       const response = await fetch('/api/auth/telegram', {
